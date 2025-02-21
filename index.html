@@ -43,7 +43,7 @@
         /* Ícone Squid */
         #squidIcon {
             position: absolute;
-            bottom: 50px;
+            top: 50px;
             left: 50%;
             transform: translateX(-50%);
             cursor: pointer;
@@ -71,7 +71,7 @@
         #easterEgg {
             display: none;
             position: absolute;
-            top: 5%; /* Ajustado para ficar mais no topo */
+            top: 5%;
             left: 50%;
             transform: translate(-50%, 0);
             text-align: center;
@@ -79,17 +79,24 @@
         }
 
         #easterEgg img {
-            width: 120px; /* Imagem menor para não ocupar muito espaço */
+            width: 120px;
             height: auto;
         }
 
         #easterEgg h2 {
             color: white;
-            font-size: 18px; /* Texto menor para melhor visualização em celulares */
+            font-size: 18px;
             margin-top: 5px;
         }
-
     </style>
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', event => {
+            if (event.ctrlKey && (event.key === 'u' || event.key === 's' || event.key === 'c' || event.key === 'p')) {
+                event.preventDefault();
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="message-container">
@@ -119,7 +126,6 @@
 
         let clickCount = 0;
 
-        // Função para mover o ícone Squid
         const moveSquidIcon = () => {
             const maxX = window.innerWidth - squidIcon.offsetWidth - 20;
             const maxY = window.innerHeight - squidIcon.offsetHeight - 50;
@@ -131,30 +137,26 @@
             squidIcon.style.top = `${posY}px`;
         };
 
-        // Função para mostrar o Easter Egg
         const showEasterEgg = () => {
-            easterEgg.style.display = 'block'; // Exibe o Easter Egg
+            easterEgg.style.display = 'block';
         };
 
-        // Atualiza a mensagem do Easter Egg conforme a pontuação
         const updateEasterEggMessage = () => {
             if (clickCount === 50) {
                 easterEggMessage.textContent = "Desiste, a página não vai abrir";
             } else if (clickCount === 100) {
                 easterEggMessage.textContent = "Você ainda está aqui?";
             } else if (clickCount === 150) {
-                location.reload(); // Recarrega a página
+                location.reload();
             }
         };
 
-        // Contador de cliques
         squidIcon.addEventListener('click', () => {
             clickCount++;
             clickCountDisplay.textContent = clickCount;
             moveSquidIcon();
             updateEasterEggMessage();
 
-            // Exibe o Easter Egg ao atingir 50 pontos
             if (clickCount >= 50) {
                 showEasterEgg();
             }
