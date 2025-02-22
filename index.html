@@ -40,19 +40,6 @@
             font-size: 18px;
         }
 
-        /* Ícone Squid */
-        #squidIcon {
-            position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            cursor: pointer;
-            width: 80px;
-            height: auto;
-            transition: top 0.2s, left 0.2s;
-            z-index: 3;
-        }
-
         /* Placar */
         .scoreboard {
             position: fixed;
@@ -65,6 +52,18 @@
             border-radius: 5px;
             box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.2);
             z-index: 2;
+        }
+
+        /* Ícone Squid */
+        #squidIcon {
+            position: absolute;
+            top: 50px; /* Alterado para iniciar abaixo do placar */
+            left: 50px;
+            cursor: pointer;
+            width: 80px;
+            height: auto;
+            transition: top 0.2s, left 0.2s;
+            z-index: 3;
         }
 
         /* Easter Egg */
@@ -102,15 +101,16 @@
     <div class="message-container">
         <h1> Acesso Bloqueado </h1>
         <p>O acesso a este site foi restrito pelas políticas de segurança.</p>
+		<p>Dúvidas, falar com o administrador da rede.</p>
     </div>
-
-    <!-- Ícone Squid -->
-    <img id="squidIcon" src="squid.png" alt="Squid Icon">
 
     <!-- Placar -->
     <div class="scoreboard">
         Points: <span id="clickCount">0</span>
     </div>
+
+    <!-- Ícone Squid -->
+    <img id="squidIcon" src="squid.png" alt="Squid Icon">
 
     <!-- Easter Egg -->
     <div id="easterEgg">
@@ -161,6 +161,13 @@
                 showEasterEgg();
             }
         });
+
+        // Inicializa o ícone logo abaixo do placar
+        window.onload = () => {
+            const scoreboardRect = document.querySelector('.scoreboard').getBoundingClientRect();
+            squidIcon.style.top = `${scoreboardRect.bottom + 10}px`;
+            squidIcon.style.left = `${scoreboardRect.left}px`;
+        };
     </script>
 </body>
 </html>
