@@ -16,8 +16,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh; /* Alterado de height para min-height */
+            overflow-y: auto;  /* Permitindo rolagem vertical */
             position: relative;
         }
 
@@ -95,6 +95,11 @@
                 event.preventDefault();
             }
         });
+
+        // Garante que touchmove não está sendo bloqueado
+        document.addEventListener('touchmove', event => {
+            if (event.cancelable) event.stopPropagation();
+        }, { passive: true });
     </script>
 </head>
 <body>
