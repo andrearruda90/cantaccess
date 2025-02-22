@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Bloqueado</title>
+    <style>
+        body {
+            background: url('block.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Alterado de height para min-height */
+            overflow-y: auto;  /* Permitindo rolagem vertical */
+            position: relative;
+        }
+
+        .message-container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        /* Placar */
+        .scoreboard {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 8px 15px;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.2);
+            z-index: 2;
+        }
+
+        /* Ícone Squid */
+        #squidIcon {
+            position: absolute;
+            top: 50px; /* Alterado para iniciar abaixo do placar */
+            left: 50px;
+            cursor: pointer;
+            width: 80px;
+            height: auto;
+            transition: top 0.2s, left 0.2s;
+            z-index: 3;
+        }
+
+        /* Easter Egg */
+        #easterEgg {
+            display: none;
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            text-align: center;
+            z-index: 2;
+        }
+
+        #easterEgg img {
+            width: 120px;
+            height: auto;
+        }
+
+        #easterEgg h2 {
+            color: white;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', event => {
+            if (event.ctrlKey && (event.key === 'u' || event.key === 's' || event.key === 'c' || event.key === 'p')) {
+                event.preventDefault();
+            }
+        });
+
+        // Garante que touchmove não está sendo bloqueado
+        document.addEventListener('touchmove', event => {
+            if (event.cancelable) event.stopPropagation();
+        }, { passive: true });
+    </script>
+</head>
+<body>
+    <div class="message-container">
+        <h1> Acesso Bloqueado </h1>
+        <p>O acesso a este site foi restrito pelas políticas de segurança.</p>
+		<p>Dúvidas, falar com o administrador da rede.</p>
+    </div>
+
+    <!-- Placar -->
+    <div class="scoreboard">
+        Points: <span id="clickCount">0</span>
+    </div>
+
+    <!-- Ícone Squid -->
+    <img id="squidIcon" src="squid.png" alt="Squid Icon">
+
+    <!-- Easter Egg -->
+    <div id="easterEgg">
+        <img src="easteregg.jpg" alt="Easter Egg">
+        <h2 id="easterEggMessage">Desiste, a página não vai abrir</h2>
+    </div>
+
+    <script>
+        const squidIcon = document.getElementById('squidIcon');
+        const clickCountDisplay = document.getElementById('clickCount');
+        const easterEgg = document.getElementById('easterEgg');
+        const easterEggMessage = document.getElementById('easterEggMessage');
+
+        let clickCount = 0;
+
+        const moveSquidIcon = () => {
+            const maxX = window.innerWidth - squidIcon.offsetWidth - 20;
+            const maxY = window.innerHeight - squidIcon.offsetHeight - 50;
+
+            let posX = Math.random() * maxX;
+            let posY = Math.random() * maxY;
+
+            squidIcon.style.left = `${posX}px`;
+            squidIcon.style.top = `${posY}px`;
+        };
+
+        const showEasterEgg = () => {
+            easterEgg.style.display = 'block';
+        };
+
+        const updateEasterEggMessage = () => {
+            if (clickCount === 50) {
+                easterEggMessage.textContent = "Desiste, a página não vai abrir";
+            } else if (clickCount === 100) {
+                easterEggMessage.textContent = "Você ainda está aqui?";
+            } else if (clickCount === 150) {
+                location.reload();
+            }
+        };
+
+        squidIcon.addEventListener('click', () => {
+            clickCount++;
+            clickCountDisplay.textContent = clickCount;
+            moveSquidIcon();
+            updateEasterEggMessage();
+
+            if (clickCount >= 50) {
+                showEasterEgg();
+            }
+        });
+
+        // Inicializa o ícone logo abaixo do placar
+        window.onload = () => {
+            const scoreboardRect = document.querySelector('.scoreboard').getBoundingClientRect();
+            squidIcon.style.top = `${scoreboardRect.bottom + 10}px`;
+            squidIcon.style.left = `${scoreboardRect.left}px`;
+        };
+    </script>
+</body>
+</html>
